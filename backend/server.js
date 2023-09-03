@@ -5,6 +5,13 @@ const mysql = require('mysql2');
 const app = express();
 const port = 3000; // Porta da sua API
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8081'); // Substitua com o endereço do seu aplicativo
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 // Configuração do banco de dados MySQL
 const db = mysql.createConnection({
   host: 'localhost',
@@ -25,31 +32,31 @@ app.use(bodyParser.json());
 
 // Rota de autenticação
 app.post('/authenticate', (req, res) => {
-    const { username, password } = req.query;
-  
-    const query = 'SELECT * FROM tb_hl_cliente WHERE cpf_cnpj_cliente = ? AND pass = ?';
-    db.query(query, [username, password], (err, results) => {
-      if (err) {
-        console.error('Erro ao consultar o banco de dados:', err);
-        res.status(500).json({ message: 'Erro interno do servidor' });
-        return;
+  const { username, password } = req.body;
+
+  const query = 'SELECT * FROM tb_hl_cliente WHERE cpf_cnpj_cliente = ? AND pass = ?';
+  db.query(query, [username, password], (err, results) => {
+    if (err) {
+      console.error('Erro ao consultar o banco de dados:', err);
+      res.status(500).json({ message: 'Erro interno do servidor' });
+      return;
+    }
+
+    if (results.length === 1) {
+      const user = results[0];
+      res.status(200).json({ message: 'Autenticação bem-sucedida', user });
+    } else {
+      let errors = [];
+      if (results.length === 0) {
+        errors.push('Credencial de usuário não encontrada.');
       }
-  
-      if (results.length === 1) {
-        const user = results[0];
-        res.status(200).json({ message: 'Autenticação bem-sucedida', user });
-      } else {
-        let errors = [];
-        if (results.length === 0) {
-          errors.push('Credencial de usuário não encontrada.');
-        }
-        if (results.length > 0 && results[0].pass !== password) {
-          errors.push('Senha incorreta.');
-        }
-        res.status(401).json({ message: 'Credenciais inválidas', errors });
+      if (results.length > 0 && results[0].pass !== password) {
+        errors.push('Senha incorreta.');
       }
-    });
+      res.status(401).json({ message: 'Credenciais inválidas', errors });
+    }
   });
+});
 
 app.use(bodyParser.json());
 
