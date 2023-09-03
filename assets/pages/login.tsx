@@ -22,7 +22,8 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const serverUrl = 'http://localhost:3000'; 
+      const serverUrl = 'http://localhost:3000';
+      console.log('Enviando informações de login:', { username, password });
 
       const response = await axios.post(`${serverUrl}/authenticate`, {
         username: username,
@@ -44,7 +45,7 @@ const LoginPage = () => {
       <Logo source={require("../images/porto-logo-1.png")} />
 
       <Form>
-        <Label>Identificacao</Label>
+        <Label>Identificação</Label>
 
         <Input
           placeholder="Nome de usuário"
@@ -62,13 +63,13 @@ const LoginPage = () => {
 
         <ForgotPassword>Esqueceu sua senha?</ForgotPassword>
 
-        <LoginButton>
-          <LoginButtonText onPress={handleLogin}>Entrar</LoginButtonText>
+        <LoginButton onPress={handleLogin}>
+          <LoginButtonText>Entrar</LoginButtonText>
         </LoginButton>
 
         <GoogleButton>
           <Icon name="google" size={20} color="#009EE2" />
-          <GoogleButtonText> Entrar com Google</GoogleButtonText>
+          <GoogleButtonText>Entrar com Google</GoogleButtonText>
         </GoogleButton>
       </Form>
     </Container>
