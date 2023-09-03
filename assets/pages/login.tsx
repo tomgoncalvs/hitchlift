@@ -1,6 +1,8 @@
 // LoginPage.js
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+
 import {
   Container,
   Logo,
@@ -19,11 +21,12 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     try {
-      const serverUrl = 'http://localhost:3000';
-      console.log('Enviando informações de login:', { username, password });
+      const serverUrl = "http://localhost:3000";
+      console.log("Enviando informações de login:", { username, password });
 
       const response = await axios.post(`${serverUrl}/authenticate`, {
         username: username,
@@ -31,12 +34,16 @@ const LoginPage = () => {
       });
 
       if (response.status === 200) {
-        console.log('Login bem-sucedido');
+        console.log("Login bem-sucedido");
+        const { user } = response.data;
+        const nomeCliente = user.nome_cliente;
+        console.log("Valor de nome_cliente:", nomeCliente);
+        navigation.navigate("PainelPage", { nomeCliente });
       } else {
-        console.log('Login falhou');
+        console.log("Login falhou");
       }
     } catch (error) {
-      console.error('Erro de autenticação:', error);
+      console.error("Erro de autenticação:", error);
     }
   };
 
