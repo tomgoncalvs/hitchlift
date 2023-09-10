@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginPage from '../assets/pages/login';
 import PainelPage from '../assets/pages/painel'; 
+import ChamadosPage from '../assets/pages/chamados';
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,7 @@ const Navigation = () => {
       <Stack.Navigator initialRouteName="LoginPage">
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="PainelPage" component={PainelPage} />
+        <Stack.Screen name="ChamadosPage" component={ChamadosPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
