@@ -3,14 +3,15 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
-  justify-content: center;
   align-items: center;
   background-color:#FCFCFC;
 `;
 
 export const WelcomeText = styled.Text`
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 18px;
+  margin-top: 20px;
+  color: #0270C7;
+  text-align: center;
 `;
 
 export const LogoutButton = styled.TouchableOpacity`
@@ -26,6 +27,7 @@ export const LogoutButtonText = styled.Text`
 
 export const Menu = styled.View`
   width: 100%;
+  margin-top: 20px;
   align-items: center;
 `;
 
